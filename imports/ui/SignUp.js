@@ -14,15 +14,17 @@ export default class SignUp extends React.Component{
 
 	onSubmit(e){
 		e.preventDefault();
-		Accounts.createUser({
-			email: e.target.email.value.trim(),
-			password: e.target.password.value.trim()
-		}, (err) => {
-			console.log('Signup Callback ', err);
-		})
-		// this.setState({
-		// 	error: "sdfsdf"
-		// });
+		let email = e.target.email.value.trim();
+		let password = e.target.password.value.trim();
+
+		if(password.length < 6){
+			return this.setState({error: 'Password must be more than 6 characters long.'});
+		}
+		
+		Accounts.createUser({ email, password }, (err) => {
+			err ? this.setState({error: err.reason}) : this.setState({error: ''});
+		});
+
 	}
 
 	render(){
